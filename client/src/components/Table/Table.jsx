@@ -1,30 +1,21 @@
 import {useState,useEffect,useCallback} from 'react';
-import { DataGrid,GridToolbar } from '@mui/x-data-grid';
-import { Tooltip } from '@mui/material';
-import Toolbar from '@mui/material/Toolbar';
-import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
+import Pagination from '../Pagination/Pagination';
 
 const API_URL = 'http://localhost:8000/api/movies';
 
 
 
-const a = [
-  { id: 1, title: 'Snow', genres: 'Jon', year: 35,Rating:1,RottenTomato:29 },
-  { id: 2, title: 'Snow', genres: 'Jon', year: 35,Rating:1,RottenTomato:29 }
-];
 export default function DataTable() {
-  const [rows,setRows] = useState(a);
+  const [rows,setRows] = useState({});
   const [loading,setLoading] = useState(true);
   const [error,setError] = useState(null);
-  
+  const [page, setPage] = useState(0)
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        // const response = await fetch(API_URL);
-        // const data = await response.json();
-        // setRows(data);
+        const response = await fetch(`${API_URL}?page=${page}`);
+        const data = await response.json();
+        setRows(data);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -33,16 +24,28 @@ export default function DataTable() {
     };
 
     fetchRecords();
-  }, [])
+  }, [page])
   
 
-  const handleDeleteRow = (index)=>{
+  const handleDeleteRow = async(index,row)=>{
     //logic that send the enter rows to the server and server deletes the selected rows
-    setRows(rows.filter((_, i) => i !== index));
+    try{
+
+      await fetch(`${API_URL}/${row.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      setRows(rows.filter((_, i) => i !== index));
+    }
+    catch(err){
+      setError(err)
+    }
   }
 
   const handleAddRow = async () => {
-    const newRecord = { id:'' ,title:'', genres: '', year: '', Rating: '', RottenTomato: '' };
+    const newRecord = {id:'',title:'', genres: '', year: '', Rating: '', RottenTomato: '' };
     try {
       setRows([...rows, newRecord]);
     } catch (error) {
@@ -55,7 +58,8 @@ export default function DataTable() {
 
     if (field === 'year' || field === 'Rating' || field === 'RottenTomato') {
         // Numeric validation using regex (only allows numbers)
-        regex = /^\d+$/;
+        regex = /^-?(\d+(\.\d*)?|\.\d+)$/
+        ;
     } else {
         // String validation using regex (only allows non-empty strings)
         regex = /^[^\s]+$/;
@@ -70,7 +74,6 @@ export default function DataTable() {
     const isValidValue = validateValue(field,value);
 
     if(isValidValue){
-      //have to call the update function if it error due to validation we show the error
       newRecords[index][field] = value;
       setRows(newRecords);
     }
@@ -79,8 +82,23 @@ export default function DataTable() {
     }
   }
 
-  const handleUpdateRow = async(rowId)=>{
+  const handleUpdateRow = async(index,key,rowId)=>{
     //here update function will be called to the server
+    const data = {
+      [key]:rows[index][key]
+    }
+    try {
+      await fetch(`${API_URL}/${rowId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+       
+        body: JSON.stringify(data),
+      })
+    } catch (error) {
+      setError(error);
+    }
   }
  
   if (loading) {
@@ -114,14 +132,14 @@ export default function DataTable() {
                         type="text"
                         value={row[key]}
                         onChange={(e) => handleInputChange(index,key,e.target.value)}
-                        onBlur={()=>handleUpdateRow(row.id)}
+                        onBlur={()=>handleUpdateRow(index,key,row.id)}
                         style={{border:"none"}}
                       />
                     </td>
                   )
                 ))}
                 <td>
-                  <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteRow(index)}>Delete</button>
+                  <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteRow(index,row)}>Delete</button>
 
                 </td>
               </tr>
@@ -133,6 +151,7 @@ export default function DataTable() {
               </tr>
         </tbody>
       </table>
+      <Pagination page={page} setPage={setPage}/>
     </div>
     
   );

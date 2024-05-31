@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes.movie import movie
+from routes.movie import movieRouter
 from dotenv import load_dotenv,dotenv_values
 from database.config import handle_csv_dump
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,7 +24,7 @@ app.add_middleware(
 #     await handle_csv_dump()
 
 
-app.include_router(movie)
+app.include_router(movieRouter)
 
 @app.get("/api")
 def he():

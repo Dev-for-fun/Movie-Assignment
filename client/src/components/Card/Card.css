@@ -1,5 +1,8 @@
 .app__card{
     margin: 1rem;
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping of cards if they exceed the container width */
+    justify-content: space-between; /* Adjust space between cards */
 }
 
 span{

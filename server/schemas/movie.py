@@ -1,7 +1,7 @@
 #this used convert mongo db object into python dict
 def movieEntity(item) -> dict:
     return {
-        "id":item['movie'],
+        "id":item['_id'],
         "title":item['title'],
         "genres":item['genres'],
         "year":item['year'],

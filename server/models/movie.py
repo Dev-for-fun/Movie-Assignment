@@ -6,4 +6,4 @@ class Movie(BaseModel):
     year : int 
     Rating: float
     RottenTomato:int 
-    id:str="0"
+    id:int

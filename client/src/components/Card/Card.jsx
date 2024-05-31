@@ -2,7 +2,25 @@ import React from 'react'
 import "./Card.css"
 import {Link} from 'react-router-dom'
 
-const Card = ({movie}) => {
+const Card = ({movie,setMovies,index,movies}) => {
+
+  const API_URL = 'http://localhost:8000/api/movies';
+
+  const handleDeleteRow = async(index,movie)=>{
+    try{
+
+      await fetch(`${API_URL}/${movie.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      setMovies(movies.filter((_, i) => i !== index));
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
   return (
     <div className="app__card">
         <div className="card" style={{width: "18rem"}}>
@@ -14,10 +32,10 @@ const Card = ({movie}) => {
             <p className="card-text"><span>Ratings:</span> {movie.Rating}</p>
             <p className="card-text"><span>RottenTomato:</span> {movie.RottenTomato}</p>
             <div className="card-buttons">
-              <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteRow(index)}>Delete</button>
+              <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteRow(index,movie)}>Delete</button>
               <button type="button" className="btn btn-outline-success">
 
-              <Link to="/card/1" >Edit</Link>
+              <Link to={`/card/${movie.id}`} >Edit</Link>
               </button>
             </div>
 
