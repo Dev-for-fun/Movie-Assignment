@@ -2,23 +2,25 @@ from fastapi import APIRouter,Request,HTTPException
 from database.connection import movie_collection
 from schemas.movie import movieEntity, moviesEntity
 from bson import ObjectId
-
+from models.movie import Movie
 movie = APIRouter()
 
 @movie.get("/api/movies")
-async def handleGetMovies(request:Request):
+async def handleGetMovies(request:Request,page:int=0,pageSize:int= 10)->list[Movie]:
     try:
-        response_data = movie_collection.find({})
+        response_data = movie_collection.find({}).skip(page*pageSize).limit(pageSize)
         
         movies = moviesEntity(response_data)
 
-        return movies
+        return [
+            Movie(**movie) for movie in movies
+        ]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error occured while fetching movies -- {e}")
 
 
 @movie.post("/api/movies/add")
-async def handleAddMovies(request:Request):
+async def handleAddMovies(request:Request)->Movie:
     request_body = await request.json()
     
     if("title" not in request_body or "Rating" not in request_body or "RottenTomato" not in request_body or "movie" not in request_body or "year" not in request_body or "genres" not in request_body):
@@ -28,9 +30,9 @@ async def handleAddMovies(request:Request):
         movie_dict = dict(request_body)
 
         inserted_movie = movie_collection.insert_one(movie_dict)
-        movie = movie_collection.find_one({"_id":inserted_movie.inserted_id})
-
-        return movieEntity(movie)
+        response_data = movie_collection.find_one({"_id":inserted_movie.inserted_id})
+        movies = movieEntity(response_data)
+        return Movie(**movies)
     except Exception as e:
         raise HTTPException(status_code=500, detail= f"Error occured while inserting the movie: {e}")
 
