@@ -1,0 +1,15 @@
+.card_page .cards{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card_page nav{
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+}
+
+.card_page nav button a{
+    text-decoration: none;
+    color: white;
+}

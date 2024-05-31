@@ -1,0 +1,17 @@
+.app__card{
+    margin: 1rem;
+}
+
+span{
+    font-weight: bolder;
+}
+
+.card .card-buttons{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.card .card-buttons a{
+    text-decoration: none;
+    color: lightgreen;
+}
