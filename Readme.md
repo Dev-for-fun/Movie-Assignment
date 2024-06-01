@@ -9,16 +9,41 @@
 
 
 ## Steps to run the project
-1. Install NodeJS and run npm install to install the dependencies
-2. Install the frontend dependencies also
+1. Install Python and run pip install -r requirements.txt to install the dependencies
+2. Install the frontend dependencies also using npm install
 3. Create .env file( for guidance see .env.example file)
 4. use fastapi dev index.py to run the server of project
 5. use npm run dev to run the frontend
 
-### For dummy data dump using dummy data, uncomment the line 22 in index.py file and uncomment after that as its slow and I am still figuring out how to reduce the api time for it 
+### For dummy data dump , uncomment the line 22 in index.py file and comment it after the dump
 
-## Notes 
-- Still need to figure out the global search functionality
-- For other frontend components, I have done CRUD operation on the backend api and also used arrays filter method to show them better on the frontend side
-- for the /table at frontend, i used the array methods as mentioned in the assignment and also crud operation on the server api to showcase them if user reloads the webpage or server
-- for pagination,I just paginated the server api itself and whenever user creates on either next or prev button we just fetch the new movies. Paginating the api itself improved the api performance considerably
+## Frontend  Endpoints
+- **Endpoint:** `/card`
+- It fetches all the movies and shows all the movies in card components
+
+- **Endpoint:** `/`
+- It fetches all the movies and shows all the movies in a table format
+
+## Backend API Endpoints
+
+### 1. Fetch movies with pagination 
+- **Endpoint:** `/api/movies?page=1&pageSize=10`
+- **Method:** GET
+- **Description:** Fetches the movies according to the specified queries
+
+### 2. Fetch all the movies exist in the database
+- **Endpoint:** `/api/movies/all`
+- **Method:** GET
+- **Description:** Fetches all the movies in the database
+
+### 3. Add a new movie to the database
+- **Endpoint:** `/api/movies/add`
+- **Method:** POST
+
+### 4. Delete a movie using movieId
+- **Endpoint:** `/api/movies/{movie_id}`
+- **Method:** DELETE
+
+### 5. Update a movie
+- **Endpoint:** `/api/movies/{movie_id}`
+- **Method:** PATCH
