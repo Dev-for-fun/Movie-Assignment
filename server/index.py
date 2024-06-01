@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-
+#PLEASE REMOVE THE COMMENT IF YOU TO DUMP THE DATA
 # @app.on_event("startup")
 # async def on_startup():
 #     await handle_csv_dump()

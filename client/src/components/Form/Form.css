@@ -1,3 +1,7 @@
 .app__form{
     margin: 1rem;
 }
+
+.app__form .MuiPaper-root{
+    display: none;
+}

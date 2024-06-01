@@ -1,5 +1,6 @@
 import {useState,useEffect,useCallback} from 'react';
 import Pagination from '../Pagination/Pagination';
+import Search from '../Search/Search';
 
 const API_URL = 'http://localhost:8000/api/movies';
 
@@ -9,6 +10,7 @@ export default function DataTable() {
   const [rows,setRows] = useState({});
   const [loading,setLoading] = useState(true);
   const [error,setError] = useState(null);
+  const [movieData,setMovieData] = useState([]);
   const [page, setPage] = useState(0)
   useEffect(() => {
     const fetchRecords = async () => {
@@ -17,6 +19,7 @@ export default function DataTable() {
         const data = await response.json();
         setRows(data);
         setLoading(false);
+        setMovieData(data);
       } catch (error) {
         setError(error.message);
         setLoading(false);
@@ -111,6 +114,7 @@ export default function DataTable() {
 
   return (
     <div>
+      <Search movieData={movieData} movies={rows} setMovies={setRows}/>
       <h1>Movies</h1>
       <table className="table">
         <thead>

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect,useRef } from 'react'
 import Card from '../Card/Card.jsx'
 import {Link} from 'react-router-dom'
 import "./CardPage.css"
@@ -11,6 +11,7 @@ const CardPage = () => {
 
     const [movies, setMovies] = useState([{}]);
     const [loading,setLoading] = useState(true);
+    const [movieData,setMovieData] = useState([]);
     const [error,setError] = useState(null);
     const [page,setPage] = useState(0);
     useEffect(() => {
@@ -21,6 +22,7 @@ const CardPage = () => {
             const data = await response.json();
             setMovies(data);
             setLoading(false);
+            setMovieData(data);
           } catch (error) {
             setError(error.message);
             setLoading(false);
@@ -41,7 +43,7 @@ const CardPage = () => {
       }
   return (
     <div className="card_page">
-       <Search movies={movies} setMovies= {setMovies}/>
+       <Search movies={movies} setMovies= {setMovies} movieData={movieData}/>
         <nav>
             <h1>Movies</h1>
             <button type="button" className="btn btn-primary">

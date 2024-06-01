@@ -3,7 +3,7 @@ import { Formik } from "formik"
 import React from 'react'
 import * as yup from "yup";
 
-const Search = ({movies,setMovies}) => {
+const Search = ({movies,setMovies,movieData}) => {
      const API_URL = 'http://localhost:8000/api/movies'
     const searchSchema = yup.object().shape({
         searchTerm: yup.string().required("required"),
@@ -12,21 +12,13 @@ const Search = ({movies,setMovies}) => {
     const initialSearchValue = {
         searchTerm:""
     };
+    
 
     const handleFormSubmit = async(values,onSubmitProps)=>{
-        const fetchRecords = async () => {
-          try {
-            const response = await fetch(`${API_URL}/all`);
-            const data = await response.json();
-            setMovies(data);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-      await fetchRecords();
+        movies = movieData;
+        console.log(movieData)
         const query = values.searchTerm;
-        console.log(query);
-        console.log(movies);
+        
         const filteredMovies = movies.filter(movie =>
             movie.title.toLowerCase().includes(query.toLowerCase()) ||
             movie.genres.toLowerCase().includes(query.toLowerCase()) ||
@@ -34,6 +26,7 @@ const Search = ({movies,setMovies}) => {
           );
           // Update the displayed records with the filtered results
           setMovies(filteredMovies);
+          onSubmitProps.resetForm();
     }
 
   return (
@@ -63,7 +56,7 @@ const Search = ({movies,setMovies}) => {
           />
           {errors.RottenTomato && touched.RottenTomato && <div className="text-danger">{errors.RottenTomato}</div>}
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary searchBtn">Submit</button>
       </form>
     )}
   </Formik>
