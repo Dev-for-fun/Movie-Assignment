@@ -7,7 +7,7 @@ import Search from '../Search/Search.jsx'
 
 const CardPage = () => {
 
-    const API_URL = 'http://localhost:8000/api/movies';
+    const API_URL = 'https://movie-assignment.onrender.com/api/movies';
 
     const [movies, setMovies] = useState([{}]);
     const [loading,setLoading] = useState(true);

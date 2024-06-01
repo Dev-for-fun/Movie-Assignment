@@ -6,7 +6,7 @@ const Card = ({movie,setMovies,index,movies}) => {
 
   const [error, setError] = useState(null)
 
-  const API_URL = 'http://localhost:8000/api/movies';
+  const API_URL = 'https://movie-assignment.onrender.com/api/movies';
 
   const handleDeleteRow = async(index,movie)=>{
     try{

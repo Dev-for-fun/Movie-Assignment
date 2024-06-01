@@ -2,7 +2,7 @@ import {useState,useEffect,useCallback} from 'react';
 import Pagination from '../Pagination/Pagination';
 import Search from '../Search/Search';
 
-const API_URL = 'http://localhost:8000/api/movies';
+const API_URL = 'https://movie-assignment.onrender.com/api/movies';
 
 
 

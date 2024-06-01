@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 const Form = () => {
-    const API_URL = 'http://localhost:8000/api/movies';
+    const API_URL = 'https://movie-assignment.onrender.com/api/movies';
     const { id } = useParams();
     const [error,setError] = useState(null);
     const [editPage, setEditPage] = useState(false)
