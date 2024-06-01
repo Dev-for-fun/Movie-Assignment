@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./Card.css"
 import {Link} from 'react-router-dom'
 
 const Card = ({movie,setMovies,index,movies}) => {
+
+  const [error, setError] = useState(null)
 
   const API_URL = 'http://localhost:8000/api/movies';
 
@@ -18,8 +20,11 @@ const Card = ({movie,setMovies,index,movies}) => {
       setMovies(movies.filter((_, i) => i !== index));
     }
     catch(err){
-      console.log(err)
+      setError(err);
     }
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
   }
   return (
     <div className="app__card">

@@ -2,6 +2,7 @@ import requests
 from database.connection import movie_collection
 import pandas as pd
 from io import StringIO
+from fastapi import HTTPException
 
 async def handle_csv_dump():
     try:
@@ -23,4 +24,4 @@ async def handle_csv_dump():
         
         
     except Exception as e:
-        print(e)
+        raise HTTPException(status_code=500, detail=f"Error occurred while dumping the movie data: {e}")

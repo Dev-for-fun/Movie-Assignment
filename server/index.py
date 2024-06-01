@@ -26,6 +26,3 @@ app.add_middleware(
 
 app.include_router(movieRouter)
 
-@app.get("/api")
-def he():
-    return {"hello world"}

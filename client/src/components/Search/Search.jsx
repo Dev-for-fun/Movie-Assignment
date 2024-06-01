@@ -4,7 +4,6 @@ import React from 'react'
 import * as yup from "yup";
 
 const Search = ({movies,setMovies,movieData}) => {
-     const API_URL = 'http://localhost:8000/api/movies'
     const searchSchema = yup.object().shape({
         searchTerm: yup.string().required("required"),
     });
@@ -16,7 +15,7 @@ const Search = ({movies,setMovies,movieData}) => {
 
     const handleFormSubmit = async(values,onSubmitProps)=>{
         movies = movieData;
-        console.log(movieData)
+
         const query = values.searchTerm;
         
         const filteredMovies = movies.filter(movie =>
